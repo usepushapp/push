@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1096762817884",
+    "project_id": "push-app-qvknd4",
+    "storage_bucket": "push-app-qvknd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096762817884:android:01c23e6335d5dd16bf9599",
+        "android_client_info": {
+          "package_name": "com.mycompany.pushapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP1VDl0LXc_wC_fCMLDu0Nl4V24vdBAt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
