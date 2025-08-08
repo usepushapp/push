@@ -570,7 +570,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget> {
                                     refId: valueOrDefault(
                                         currentUserDocument?.refCode, ''),
                                     refferedId: valueOrDefault(
-                                        currentUserDocument?.ref, ''),
+                                        currentUserDocument?.referredBy, ''),
                                   ),
                                   ...mapToFirestore(
                                     {
@@ -652,7 +652,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget> {
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                 ),
-                                borderRadius: BorderRadius.circular(60.0),
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
                             ),
                           ),

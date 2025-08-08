@@ -1,13 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/random_data_util.dart' as random_data;
-import '/index.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'account_funding_model.dart';
 export 'account_funding_model.dart';
 
@@ -47,6 +48,8 @@ class _AccountFundingWidgetState extends State<AccountFundingWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Align(
       alignment: AlignmentDirectional(0.0, 1.0),
       child: Container(
@@ -132,6 +135,11 @@ class _AccountFundingWidgetState extends State<AccountFundingWidget> {
                           child: TextFormField(
                             controller: _model.amountTextController,
                             focusNode: _model.amountFocusNode,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              '_model.amountTextController',
+                              Duration(milliseconds: 2000),
+                              () => safeSetState(() {}),
+                            ),
                             autofocus: false,
                             textInputAction: TextInputAction.done,
                             obscureText: false,
@@ -243,30 +251,71 @@ class _AccountFundingWidgetState extends State<AccountFundingWidget> {
                         !_model.formKey.currentState!.validate()) {
                       return;
                     }
-
-                    await TransactionsRecord.collection
-                        .doc()
-                        .set(createTransactionsRecordData(
-                          transactionId:
-                              random_data.randomInteger(10000, 99999),
-                          transactionType: 'Deposit',
-                          amount:
-                              double.tryParse(_model.amountTextController.text),
-                          transactionStatus: 'Pending',
-                          transactionDate: getCurrentTimestamp,
-                          transactonRef: 'Deposit',
-                          refEarning: 0.0,
-                          userEmail: currentUserEmail,
-                          paymentMethod: 'Bank Transfer',
-                          userId: currentUserUid,
-                          depositorName: '',
-                          depositorAccount: 0,
-                        ));
                     FFAppState().funding =
                         double.parse(_model.amountTextController.text);
                     safeSetState(() {});
+                    Navigator.pop(context);
+                    _model.apiResultjpv = await InitializeTransactionCall.call(
+                      amount: FFAppState().funding,
+                      email: currentUserEmail,
+                      currency:
+                          valueOrDefault(currentUserDocument?.currency, ''),
+                      apiKey:
+                          'sk_test_91301c78144fb1b53c0fd52b03979bcbd11194cf',
+                    );
 
-                    context.pushNamed(FundingGatewayWidget.routeName);
+                    if ((_model.apiResultjpv?.succeeded ?? true)) {
+                      await PaymentsRecord.collection
+                          .doc()
+                          .set(createPaymentsRecordData(
+                            name: currentUserDisplayName,
+                            amount: FFAppState().funding,
+                            status: 'Pending',
+                            createdAt: getCurrentTimestamp,
+                            transactionId:
+                                'TXN${InitializeTransactionCall.referenceId(
+                              (_model.apiResultjpv?.jsonBody ?? ''),
+                            )}',
+                            transactionType: 'funding',
+                            transactionReference:
+                                InitializeTransactionCall.referenceId(
+                              (_model.apiResultjpv?.jsonBody ?? ''),
+                            ),
+                            email: currentUserEmail,
+                            url: InitializeTransactionCall.paymentLink(
+                              (_model.apiResultjpv?.jsonBody ?? ''),
+                            ),
+                            channel: '',
+                            currency: '',
+                            paymentGatewayResponse: '',
+                            uid: currentUserUid,
+                          ));
+                      await launchURL(InitializeTransactionCall.paymentLink(
+                        (_model.apiResultjpv?.jsonBody ?? ''),
+                      )!);
+                    } else {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Status : ${InitializeTransactionCall.status(
+                              (_model.apiResultjpv?.jsonBody ?? ''),
+                            )?.toString()}Validation : ${InitializeTransactionCall.validation(
+                              (_model.apiResultjpv?.jsonBody ?? ''),
+                            )}Secret Key :${InitializeTransactionCall.secretKey(
+                              (_model.apiResultjpv?.jsonBody ?? ''),
+                            )}',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          duration: Duration(milliseconds: 4000),
+                          backgroundColor: FlutterFlowTheme.of(context).error,
+                        ),
+                      );
+                    }
+
+                    safeSetState(() {});
                   },
                   text: 'Proceed to make Payment',
                   options: FFButtonOptions(
@@ -299,7 +348,7 @@ class _AccountFundingWidgetState extends State<AccountFundingWidget> {
                     borderSide: BorderSide(
                       color: Colors.transparent,
                     ),
-                    borderRadius: BorderRadius.circular(60.0),
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
               ),

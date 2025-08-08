@@ -128,7 +128,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 10.0, 0.0, 8.0),
                                 child: Text(
-                                  'Create An Account',
+                                  'Sign Up',
                                   textAlign: TextAlign.start,
                                   style: FlutterFlowTheme.of(context)
                                       .displayMedium
@@ -451,7 +451,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                   textInputAction: TextInputAction.done,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Enter Refferal Code (Optional)',
+                                    labelText: 'Refferal Code (Optional)',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .labelLarge
                                         .override(
@@ -558,7 +558,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
-                              16.0, 50.0, 16.0, 24.0),
+                              16.0, 50.0, 16.0, 12.0),
                           child: FFButtonWidget(
                             onPressed: () async {
                               if (_model.formKey.currentState == null ||
@@ -584,7 +584,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                       _model.signupEmailTextController.text,
                                       'email',
                                     ),
-                                    ref: _model.refTextController.text,
                                     createdTime: getCurrentTimestamp,
                                     refCode: 'PUSH-${random_data.randomString(
                                       6,
@@ -593,6 +592,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                       true,
                                       true,
                                     )}',
+                                    referredBy: _model.refTextController.text,
                                   ));
 
                               await authManager.sendEmailVerification();
@@ -624,19 +624,127 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 24.0),
-                              child: Text(
-                                'Have An Account? ',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyLarge
-                                    .override(
-                                      font: GoogleFonts.spaceGrotesk(
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              16.0, 0.0, 16.0, 10.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              GoRouter.of(context).prepareAuthEvent();
+                              final user =
+                                  await authManager.signInWithGoogle(context);
+                              if (user == null) {
+                                return;
+                              }
+                              if ((valueOrDefault(
+                                              currentUserDocument?.refCode,
+                                              '') !=
+                                          '') &&
+                                  (valueOrDefault(
+                                              currentUserDocument?.country,
+                                              '') !=
+                                          '')) {
+                                context.pushNamedAuth(
+                                    HomeWidget.routeName, context.mounted);
+                              } else {
+                                context.goNamedAuth(
+                                    ProfileSetupWidget.routeName,
+                                    context.mounted);
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 70.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                borderRadius: BorderRadius.circular(50.0),
+                                border: Border.all(
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 8.0, 0.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.asset(
+                                        'assets/images/google.webp',
+                                        width: 40.0,
+                                        height: 40.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Continue with  Google',
+                                    style: FlutterFlowTheme.of(context)
+                                        .labelLarge
+                                        .override(
+                                          font: GoogleFonts.spaceGrotesk(
+                                            fontWeight:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelLarge
+                                                    .fontWeight,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelLarge
+                                                    .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelLarge
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelLarge
+                                                  .fontStyle,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            context.pushNamed(LoginWidget.routeName);
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 24.0),
+                                child: Text(
+                                  'Have An Account? ',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyLarge
+                                      .override(
+                                        font: GoogleFonts.spaceGrotesk(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyLarge
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyLarge
+                                                  .fontStyle,
+                                        ),
+                                        letterSpacing: 0.0,
                                         fontWeight: FlutterFlowTheme.of(context)
                                             .bodyLarge
                                             .fontWeight,
@@ -644,39 +752,33 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                             .bodyLarge
                                             .fontStyle,
                                       ),
-                                      letterSpacing: 0.0,
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .bodyLarge
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyLarge
-                                          .fontStyle,
-                                    ),
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 24.0),
-                              child: Text(
-                                'Login',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyLarge
-                                    .override(
-                                      font: GoogleFonts.spaceGrotesk(
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 24.0),
+                                child: Text(
+                                  'Login',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyLarge
+                                      .override(
+                                        font: GoogleFonts.spaceGrotesk(
+                                          fontWeight: FontWeight.bold,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyLarge
+                                                  .fontStyle,
+                                        ),
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.bold,
                                         fontStyle: FlutterFlowTheme.of(context)
                                             .bodyLarge
                                             .fontStyle,
                                       ),
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyLarge
-                                          .fontStyle,
-                                    ),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),

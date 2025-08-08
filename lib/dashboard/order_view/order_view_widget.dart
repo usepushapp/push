@@ -710,7 +710,7 @@ class _OrderViewWidgetState extends State<OrderViewWidget> {
                                     borderSide: BorderSide(
                                       color: Colors.transparent,
                                     ),
-                                    borderRadius: BorderRadius.circular(60.0),
+                                    borderRadius: BorderRadius.circular(12.0),
                                   ),
                                 ),
                               ),
@@ -761,7 +761,7 @@ class _OrderViewWidgetState extends State<OrderViewWidget> {
                                     borderSide: BorderSide(
                                       color: Colors.transparent,
                                     ),
-                                    borderRadius: BorderRadius.circular(60.0),
+                                    borderRadius: BorderRadius.circular(12.0),
                                   ),
                                 ),
                               ),

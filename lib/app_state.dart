@@ -74,6 +74,49 @@ class FFAppState extends ChangeNotifier {
     _safeInit(() {
       _funding = prefs.getDouble('ff_funding') ?? _funding;
     });
+    _safeInit(() {
+      _billboardCampaignTitleState =
+          prefs.getString('ff_billboardCampaignTitleState') ??
+              _billboardCampaignTitleState;
+    });
+    _safeInit(() {
+      _billboardCampaignDescription =
+          prefs.getString('ff_billboardCampaignDescription') ??
+              _billboardCampaignDescription;
+    });
+    _safeInit(() {
+      _billboardCampaignObjective =
+          prefs.getString('ff_billboardCampaignObjective') ??
+              _billboardCampaignObjective;
+    });
+    _safeInit(() {
+      _billboardCampaignDuration =
+          prefs.containsKey('ff_billboardCampaignDuration')
+              ? DateTime.fromMillisecondsSinceEpoch(
+                  prefs.getInt('ff_billboardCampaignDuration')!)
+              : _billboardCampaignDuration;
+    });
+    _safeInit(() {
+      _billboardCampaignEndDate =
+          prefs.containsKey('ff_billboardCampaignEndDate')
+              ? DateTime.fromMillisecondsSinceEpoch(
+                  prefs.getInt('ff_billboardCampaignEndDate')!)
+              : _billboardCampaignEndDate;
+    });
+    _safeInit(() {
+      _billboardCart = prefs
+              .getStringList('ff_billboardCart')
+              ?.map((path) => path.ref)
+              .toList() ??
+          _billboardCart;
+    });
+    _safeInit(() {
+      _billboardCartSummary = prefs
+              .getStringList('ff_billboardCartSummary')
+              ?.map(int.parse)
+              .toList() ??
+          _billboardCartSummary;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -116,7 +159,7 @@ class FFAppState extends ChangeNotifier {
     _pushNameBtn = value;
   }
 
-  DateTime? _publishDate = DateTime.fromMillisecondsSinceEpoch(1732201800000);
+  DateTime? _publishDate = DateTime.fromMillisecondsSinceEpoch(1753874400000);
   DateTime? get publishDate => _publishDate;
   set publishDate(DateTime? value) {
     _publishDate = value;
@@ -326,6 +369,155 @@ class FFAppState extends ChangeNotifier {
   double get earningTotalAmount => _earningTotalAmount;
   set earningTotalAmount(double value) {
     _earningTotalAmount = value;
+  }
+
+  String _billboardCampaignTitleState = '';
+  String get billboardCampaignTitleState => _billboardCampaignTitleState;
+  set billboardCampaignTitleState(String value) {
+    _billboardCampaignTitleState = value;
+    prefs.setString('ff_billboardCampaignTitleState', value);
+  }
+
+  /// Describe your what your advertising and your objective
+  String _billboardCampaignDescription = '';
+  String get billboardCampaignDescription => _billboardCampaignDescription;
+  set billboardCampaignDescription(String value) {
+    _billboardCampaignDescription = value;
+    prefs.setString('ff_billboardCampaignDescription', value);
+  }
+
+  String _billboardCampaignObjective = '';
+  String get billboardCampaignObjective => _billboardCampaignObjective;
+  set billboardCampaignObjective(String value) {
+    _billboardCampaignObjective = value;
+    prefs.setString('ff_billboardCampaignObjective', value);
+  }
+
+  DateTime? _billboardCampaignDuration =
+      DateTime.fromMillisecondsSinceEpoch(1753874400000);
+  DateTime? get billboardCampaignDuration => _billboardCampaignDuration;
+  set billboardCampaignDuration(DateTime? value) {
+    _billboardCampaignDuration = value;
+    value != null
+        ? prefs.setInt(
+            'ff_billboardCampaignDuration', value.millisecondsSinceEpoch)
+        : prefs.remove('ff_billboardCampaignDuration');
+  }
+
+  DateTime? _billboardCampaignEndDate =
+      DateTime.fromMillisecondsSinceEpoch(1753874460000);
+  DateTime? get billboardCampaignEndDate => _billboardCampaignEndDate;
+  set billboardCampaignEndDate(DateTime? value) {
+    _billboardCampaignEndDate = value;
+    value != null
+        ? prefs.setInt(
+            'ff_billboardCampaignEndDate', value.millisecondsSinceEpoch)
+        : prefs.remove('ff_billboardCampaignEndDate');
+  }
+
+  String _filterByLocation = '';
+  String get filterByLocation => _filterByLocation;
+  set filterByLocation(String value) {
+    _filterByLocation = value;
+  }
+
+  String _filterByCategory = '';
+  String get filterByCategory => _filterByCategory;
+  set filterByCategory(String value) {
+    _filterByCategory = value;
+  }
+
+  int _filterByPrice = 0;
+  int get filterByPrice => _filterByPrice;
+  set filterByPrice(int value) {
+    _filterByPrice = value;
+  }
+
+  bool _billboardSearchResult = false;
+  bool get billboardSearchResult => _billboardSearchResult;
+  set billboardSearchResult(bool value) {
+    _billboardSearchResult = value;
+  }
+
+  List<DocumentReference> _billboardCart = [];
+  List<DocumentReference> get billboardCart => _billboardCart;
+  set billboardCart(List<DocumentReference> value) {
+    _billboardCart = value;
+    prefs.setStringList('ff_billboardCart', value.map((x) => x.path).toList());
+  }
+
+  void addToBillboardCart(DocumentReference value) {
+    billboardCart.add(value);
+    prefs.setStringList(
+        'ff_billboardCart', _billboardCart.map((x) => x.path).toList());
+  }
+
+  void removeFromBillboardCart(DocumentReference value) {
+    billboardCart.remove(value);
+    prefs.setStringList(
+        'ff_billboardCart', _billboardCart.map((x) => x.path).toList());
+  }
+
+  void removeAtIndexFromBillboardCart(int index) {
+    billboardCart.removeAt(index);
+    prefs.setStringList(
+        'ff_billboardCart', _billboardCart.map((x) => x.path).toList());
+  }
+
+  void updateBillboardCartAtIndex(
+    int index,
+    DocumentReference Function(DocumentReference) updateFn,
+  ) {
+    billboardCart[index] = updateFn(_billboardCart[index]);
+    prefs.setStringList(
+        'ff_billboardCart', _billboardCart.map((x) => x.path).toList());
+  }
+
+  void insertAtIndexInBillboardCart(int index, DocumentReference value) {
+    billboardCart.insert(index, value);
+    prefs.setStringList(
+        'ff_billboardCart', _billboardCart.map((x) => x.path).toList());
+  }
+
+  List<int> _billboardCartSummary = [];
+  List<int> get billboardCartSummary => _billboardCartSummary;
+  set billboardCartSummary(List<int> value) {
+    _billboardCartSummary = value;
+    prefs.setStringList(
+        'ff_billboardCartSummary', value.map((x) => x.toString()).toList());
+  }
+
+  void addToBillboardCartSummary(int value) {
+    billboardCartSummary.add(value);
+    prefs.setStringList('ff_billboardCartSummary',
+        _billboardCartSummary.map((x) => x.toString()).toList());
+  }
+
+  void removeFromBillboardCartSummary(int value) {
+    billboardCartSummary.remove(value);
+    prefs.setStringList('ff_billboardCartSummary',
+        _billboardCartSummary.map((x) => x.toString()).toList());
+  }
+
+  void removeAtIndexFromBillboardCartSummary(int index) {
+    billboardCartSummary.removeAt(index);
+    prefs.setStringList('ff_billboardCartSummary',
+        _billboardCartSummary.map((x) => x.toString()).toList());
+  }
+
+  void updateBillboardCartSummaryAtIndex(
+    int index,
+    int Function(int) updateFn,
+  ) {
+    billboardCartSummary[index] = updateFn(_billboardCartSummary[index]);
+    prefs.setStringList('ff_billboardCartSummary',
+        _billboardCartSummary.map((x) => x.toString()).toList());
+  }
+
+  void insertAtIndexInBillboardCartSummary(int index, int value) {
+    billboardCartSummary.insert(index, value);
+    prefs.setStringList('ff_billboardCartSummary',
+        _billboardCartSummary.map((x) => x.toString()).toList());
   }
 }
 

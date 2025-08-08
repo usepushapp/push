@@ -992,7 +992,7 @@ class _ContentWidgetState extends State<ContentWidget> {
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                 ),
-                                borderRadius: BorderRadius.circular(60.0),
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
                             ),
                           ),

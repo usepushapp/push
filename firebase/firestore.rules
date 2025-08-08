@@ -19,7 +19,7 @@ service cloud.firestore {
       allow create: if true;
       allow read: if true;
       allow write: if true;
-      allow delete: if request.auth != null;
+      allow delete: if true;
     }
 
     match /wallet/{document} {
@@ -44,6 +44,27 @@ service cloud.firestore {
     }
 
     match /referrals/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /payments/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /billboards/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if true;
+      allow delete: if true;
+    }
+
+    match /billboard_orders/{document} {
       allow create: if true;
       allow read: if true;
       allow write: if false;

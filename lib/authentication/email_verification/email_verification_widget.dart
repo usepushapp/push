@@ -177,7 +177,15 @@ class _EmailVerificationWidgetState extends State<EmailVerificationWidget> {
                             onPressed: () async {
                               await authManager.refreshUser();
                               if (currentUserEmailVerified == true) {
-                                if (currentUserDisplayName != '') {
+                                // Check to see if the Ref code or country field is set or empty.
+                                if ((valueOrDefault(
+                                                currentUserDocument?.refCode,
+                                                '') !=
+                                            '') &&
+                                    (valueOrDefault(
+                                                currentUserDocument?.country,
+                                                '') !=
+                                            '')) {
                                   context.pushNamed(HomeWidget.routeName);
                                 } else {
                                   context

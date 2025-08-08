@@ -257,6 +257,64 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ParamType.Document,
             ),
           ),
+        ),
+        FFRoute(
+          name: WebFlow04Widget.routeName,
+          path: WebFlow04Widget.routePath,
+          builder: (context, params) => WebFlow04Widget(),
+        ),
+        FFRoute(
+          name: WebFlow01Widget.routeName,
+          path: WebFlow01Widget.routePath,
+          builder: (context, params) => WebFlow01Widget(),
+        ),
+        FFRoute(
+          name: WebFlow02Widget.routeName,
+          path: WebFlow02Widget.routePath,
+          builder: (context, params) => WebFlow02Widget(),
+        ),
+        FFRoute(
+          name: WebFlow03Widget.routeName,
+          path: WebFlow03Widget.routePath,
+          builder: (context, params) => WebFlow03Widget(),
+        ),
+        FFRoute(
+          name: DashboardWidget.routeName,
+          path: DashboardWidget.routePath,
+          builder: (context, params) => DashboardWidget(),
+        ),
+        FFRoute(
+          name: BillboardSetupWidget.routeName,
+          path: BillboardSetupWidget.routePath,
+          builder: (context, params) => BillboardSetupWidget(),
+        ),
+        FFRoute(
+          name: BillboardSetupDetailsWidget.routeName,
+          path: BillboardSetupDetailsWidget.routePath,
+          builder: (context, params) => BillboardSetupDetailsWidget(),
+        ),
+        FFRoute(
+          name: BillboardDetailsWidget.routeName,
+          path: BillboardDetailsWidget.routePath,
+          asyncParams: {
+            'billboards': getDoc(['billboards'], BillboardsRecord.fromSnapshot),
+          },
+          builder: (context, params) => BillboardDetailsWidget(
+            billboards: params.getParam(
+              'billboards',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: BillboardsMVP2Widget.routeName,
+          path: BillboardsMVP2Widget.routePath,
+          builder: (context, params) => BillboardsMVP2Widget(),
+        ),
+        FFRoute(
+          name: BillboardsWidget.routeName,
+          path: BillboardsWidget.routePath,
+          builder: (context, params) => BillboardsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -376,6 +434,7 @@ class FFParameters {
     ParamType type, {
     bool isList = false,
     List<String>? collectionNamePath,
+    StructBuilder<T>? structBuilder,
   }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
@@ -394,6 +453,7 @@ class FFParameters {
       type,
       isList,
       collectionNamePath: collectionNamePath,
+      structBuilder: structBuilder,
     );
   }
 }

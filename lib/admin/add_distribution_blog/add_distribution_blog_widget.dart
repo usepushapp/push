@@ -144,8 +144,8 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                               if (selectedMedia != null &&
                                   selectedMedia.every((m) => validateFileFormat(
                                       m.storagePath, context))) {
-                                safeSetState(
-                                    () => _model.isDataUploading1 = true);
+                                safeSetState(() => _model
+                                    .isDataUploading_uploadedBlogLogo = true);
                                 var selectedUploadedFiles = <FFUploadedFile>[];
 
                                 try {
@@ -166,12 +166,13 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                                 } finally {
                                   ScaffoldMessenger.of(context)
                                       .hideCurrentSnackBar();
-                                  _model.isDataUploading1 = false;
+                                  _model.isDataUploading_uploadedBlogLogo =
+                                      false;
                                 }
                                 if (selectedUploadedFiles.length ==
                                     selectedMedia.length) {
                                   safeSetState(() {
-                                    _model.uploadedLocalFile1 =
+                                    _model.uploadedLocalFile_uploadedBlogLogo =
                                         selectedUploadedFiles.first;
                                   });
                                   showUploadMessage(context, 'Success!');
@@ -220,7 +221,8 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.memory(
-                                    _model.uploadedLocalFile1.bytes ??
+                                    _model.uploadedLocalFile_uploadedBlogLogo
+                                            .bytes ??
                                         Uint8List.fromList([]),
                                     fit: BoxFit.cover,
                                   ),
@@ -801,16 +803,21 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                         child: FFButtonWidget(
                           onPressed: () async {
                             {
-                              safeSetState(
-                                  () => _model.isDataUploading2 = true);
+                              safeSetState(() =>
+                                  _model.isDataUploading_blogLogoUpload = true);
                               var selectedUploadedFiles = <FFUploadedFile>[];
                               var selectedMedia = <SelectedFile>[];
                               var downloadUrls = <String>[];
                               try {
-                                selectedUploadedFiles =
-                                    _model.uploadedLocalFile1.bytes!.isNotEmpty
-                                        ? [_model.uploadedLocalFile1]
-                                        : <FFUploadedFile>[];
+                                selectedUploadedFiles = _model
+                                        .uploadedLocalFile_uploadedBlogLogo
+                                        .bytes!
+                                        .isNotEmpty
+                                    ? [
+                                        _model
+                                            .uploadedLocalFile_uploadedBlogLogo
+                                      ]
+                                    : <FFUploadedFile>[];
                                 selectedMedia = selectedFilesFromUploadedFiles(
                                   selectedUploadedFiles,
                                 );
@@ -824,15 +831,16 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                                     .map((u) => u!)
                                     .toList();
                               } finally {
-                                _model.isDataUploading2 = false;
+                                _model.isDataUploading_blogLogoUpload = false;
                               }
                               if (selectedUploadedFiles.length ==
                                       selectedMedia.length &&
                                   downloadUrls.length == selectedMedia.length) {
                                 safeSetState(() {
-                                  _model.uploadedLocalFile2 =
+                                  _model.uploadedLocalFile_blogLogoUpload =
                                       selectedUploadedFiles.first;
-                                  _model.uploadedFileUrl2 = downloadUrls.first;
+                                  _model.uploadedFileUrl_blogLogoUpload =
+                                      downloadUrls.first;
                                 });
                               } else {
                                 safeSetState(() {});
@@ -858,7 +866,7 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                                   _model.dollarPriceTextController.text),
                               modifiedAt: getCurrentTimestamp,
                               onSale: false,
-                              logo: _model.uploadedFileUrl2,
+                              logo: _model.uploadedFileUrl_blogLogoUpload,
                             ));
                             _model.savedBlog = MediaRecord.getDocumentFromData(
                                 createMediaRecordData(
@@ -876,7 +884,7 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                                       _model.dollarPriceTextController.text),
                                   modifiedAt: getCurrentTimestamp,
                                   onSale: false,
-                                  logo: _model.uploadedFileUrl2,
+                                  logo: _model.uploadedFileUrl_blogLogoUpload,
                                 ),
                                 mediaRecordReference);
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -935,7 +943,7 @@ class _AddDistributionBlogWidgetState extends State<AddDistributionBlogWidget> {
                             borderSide: BorderSide(
                               color: Colors.transparent,
                             ),
-                            borderRadius: BorderRadius.circular(60.0),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
                       ),

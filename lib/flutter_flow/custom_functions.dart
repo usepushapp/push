@@ -10,6 +10,7 @@ import 'place.dart';
 import 'uploaded_file.dart';
 import '/backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '/backend/schema/structs/index.dart';
 import '/auth/firebase_auth/auth_util.dart';
 
 double? cartTotal(List<double>? allPrices) {
@@ -20,6 +21,20 @@ double? cartTotal(List<double>? allPrices) {
 
   double totalPrice = 0.0;
   for (double price in allPrices) {
+    totalPrice += price;
+  }
+
+  return totalPrice;
+}
+
+int? billboardcartTotal(List<int>? billboardallPrices) {
+  // generate  total price from cart list
+  if (billboardallPrices == null || billboardallPrices.isEmpty) {
+    return null;
+  }
+
+  int totalPrice = 0;
+  for (int price in billboardallPrices) {
     totalPrice += price;
   }
 
@@ -51,4 +66,26 @@ double? sumFirebaseQuery(List<double> earnings) {
     sum += amount;
   }
   return sum;
+}
+
+int? calculateBillboardTotalCharge(
+  DateTime startDate,
+  DateTime endDate,
+  String billingType,
+  int price,
+) {
+  if (endDate.isBefore(startDate)) return 0;
+
+  if (billingType.toLowerCase() == 'monthly') {
+    int yearDiff = endDate.year - startDate.year;
+    int monthDiff = endDate.month - startDate.month;
+    int totalMonths = yearDiff * 12 + monthDiff + 1;
+
+    return totalMonths * price;
+  } else if (billingType.toLowerCase() == 'daily') {
+    int totalDays = endDate.difference(startDate).inDays + 1;
+    return totalDays * price;
+  }
+
+  return 0;
 }

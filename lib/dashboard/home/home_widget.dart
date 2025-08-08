@@ -250,14 +250,41 @@ class _HomeWidgetState extends State<HomeWidget> {
                                               ),
                                               alignment: AlignmentDirectional(
                                                   0.0, 0.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Image.asset(
-                                                  'assets/images/nigeria-naira-currency-symbol.png',
-                                                  width: 15.0,
-                                                  height: 15.0,
-                                                  fit: BoxFit.cover,
+                                              child: AuthUserStreamWidget(
+                                                builder: (context) => Text(
+                                                  valueOrDefault(
+                                                      currentUserDocument
+                                                          ?.currencySymbol,
+                                                      ''),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .labelLarge
+                                                      .override(
+                                                        font: GoogleFonts
+                                                            .spaceGrotesk(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelLarge
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelLarge
+                                                                  .fontStyle,
+                                                        ),
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelLarge
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelLarge
+                                                                .fontStyle,
+                                                      ),
                                                 ),
                                               ),
                                             ),

@@ -9,8 +9,8 @@ class AddDistributionBlogModel
   ///  State fields for stateful widgets in this component.
 
   final formKey = GlobalKey<FormState>();
-  bool isDataUploading1 = false;
-  FFUploadedFile uploadedLocalFile1 =
+  bool isDataUploading_uploadedBlogLogo = false;
+  FFUploadedFile uploadedLocalFile_uploadedBlogLogo =
       FFUploadedFile(bytes: Uint8List.fromList([]));
 
   // State field(s) for name widget.
@@ -61,10 +61,10 @@ class AddDistributionBlogModel
   // State field(s) for region widget.
   String? regionValue;
   FormFieldController<String>? regionValueController;
-  bool isDataUploading2 = false;
-  FFUploadedFile uploadedLocalFile2 =
+  bool isDataUploading_blogLogoUpload = false;
+  FFUploadedFile uploadedLocalFile_blogLogoUpload =
       FFUploadedFile(bytes: Uint8List.fromList([]));
-  String uploadedFileUrl2 = '';
+  String uploadedFileUrl_blogLogoUpload = '';
 
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
   MediaRecord? savedBlog;

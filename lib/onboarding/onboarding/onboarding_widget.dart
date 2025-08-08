@@ -139,7 +139,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                         children: [
                                           Flexible(
                                             child: Text(
-                                              'Push makes it seamless to reach millions of  audience without technical skills',
+                                              'Push makes it seamless to reach millions of  audience  with ease',
                                               textAlign: TextAlign.center,
                                               style:
                                                   FlutterFlowTheme.of(context)
@@ -525,7 +525,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                             borderSide: BorderSide(
                               color: Colors.transparent,
                             ),
-                            borderRadius: BorderRadius.circular(60.0),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
                       ],

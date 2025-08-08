@@ -45,11 +45,6 @@ class UsersRecord extends FirestoreRecord {
   String get phoneNumber => _phoneNumber ?? '';
   bool hasPhoneNumber() => _phoneNumber != null;
 
-  // "ref" field.
-  String? _ref;
-  String get ref => _ref ?? '';
-  bool hasRef() => _ref != null;
-
   // "admin" field.
   bool? _admin;
   bool get admin => _admin ?? false;
@@ -70,6 +65,31 @@ class UsersRecord extends FirestoreRecord {
   String get refCode => _refCode ?? '';
   bool hasRefCode() => _refCode != null;
 
+  // "referred_by" field.
+  String? _referredBy;
+  String get referredBy => _referredBy ?? '';
+  bool hasReferredBy() => _referredBy != null;
+
+  // "country" field.
+  String? _country;
+  String get country => _country ?? '';
+  bool hasCountry() => _country != null;
+
+  // "currency" field.
+  String? _currency;
+  String get currency => _currency ?? '';
+  bool hasCurrency() => _currency != null;
+
+  // "currency_symbol" field.
+  String? _currencySymbol;
+  String get currencySymbol => _currencySymbol ?? '';
+  bool hasCurrencySymbol() => _currencySymbol != null;
+
+  // "language" field.
+  String? _language;
+  String get language => _language ?? '';
+  bool hasLanguage() => _language != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -77,11 +97,15 @@ class UsersRecord extends FirestoreRecord {
     _uid = snapshotData['uid'] as String?;
     _createdTime = snapshotData['created_time'] as DateTime?;
     _phoneNumber = snapshotData['phone_number'] as String?;
-    _ref = snapshotData['ref'] as String?;
     _admin = snapshotData['admin'] as bool?;
     _balance = castToType<int>(snapshotData['balance']);
     _dollarActive = snapshotData['dollarActive'] as bool?;
     _refCode = snapshotData['ref_code'] as String?;
+    _referredBy = snapshotData['referred_by'] as String?;
+    _country = snapshotData['country'] as String?;
+    _currency = snapshotData['currency'] as String?;
+    _currencySymbol = snapshotData['currency_symbol'] as String?;
+    _language = snapshotData['language'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -124,11 +148,15 @@ Map<String, dynamic> createUsersRecordData({
   String? uid,
   DateTime? createdTime,
   String? phoneNumber,
-  String? ref,
   bool? admin,
   int? balance,
   bool? dollarActive,
   String? refCode,
+  String? referredBy,
+  String? country,
+  String? currency,
+  String? currencySymbol,
+  String? language,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -138,11 +166,15 @@ Map<String, dynamic> createUsersRecordData({
       'uid': uid,
       'created_time': createdTime,
       'phone_number': phoneNumber,
-      'ref': ref,
       'admin': admin,
       'balance': balance,
       'dollarActive': dollarActive,
       'ref_code': refCode,
+      'referred_by': referredBy,
+      'country': country,
+      'currency': currency,
+      'currency_symbol': currencySymbol,
+      'language': language,
     }.withoutNulls,
   );
 
@@ -160,11 +192,15 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e1?.uid == e2?.uid &&
         e1?.createdTime == e2?.createdTime &&
         e1?.phoneNumber == e2?.phoneNumber &&
-        e1?.ref == e2?.ref &&
         e1?.admin == e2?.admin &&
         e1?.balance == e2?.balance &&
         e1?.dollarActive == e2?.dollarActive &&
-        e1?.refCode == e2?.refCode;
+        e1?.refCode == e2?.refCode &&
+        e1?.referredBy == e2?.referredBy &&
+        e1?.country == e2?.country &&
+        e1?.currency == e2?.currency &&
+        e1?.currencySymbol == e2?.currencySymbol &&
+        e1?.language == e2?.language;
   }
 
   @override
@@ -175,11 +211,15 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.uid,
         e?.createdTime,
         e?.phoneNumber,
-        e?.ref,
         e?.admin,
         e?.balance,
         e?.dollarActive,
-        e?.refCode
+        e?.refCode,
+        e?.referredBy,
+        e?.country,
+        e?.currency,
+        e?.currencySymbol,
+        e?.language
       ]);
 
   @override

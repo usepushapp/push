@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'account_funding_widget.dart' show AccountFundingWidget;
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class AccountFundingModel extends FlutterFlowModel<AccountFundingWidget> {
 
     return null;
   }
+
+  // Stores action output result for [Backend Call - API (Initialize Transaction)] action in Button widget.
+  ApiCallResponse? apiResultjpv;
 
   @override
   void initState(BuildContext context) {

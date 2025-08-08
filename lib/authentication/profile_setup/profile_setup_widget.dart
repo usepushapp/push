@@ -1,11 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
+import '/flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
+import '/flutter_flow/random_data_util.dart' as random_data;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,6 +38,8 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
 
     _model.nameTextController ??= TextEditingController();
     _model.nameFocusNode ??= FocusNode();
+
+    _model.countryTextController ??= TextEditingController();
 
     _model.phoneTextController ??= TextEditingController();
     _model.phoneFocusNode ??= FocusNode();
@@ -138,8 +143,9 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                                           selectedMedia.every((m) =>
                                               validateFileFormat(
                                                   m.storagePath, context))) {
-                                        safeSetState(() =>
-                                            _model.isDataUploading = true);
+                                        safeSetState(() => _model
+                                                .isDataUploading_profilePhoto =
+                                            true);
                                         var selectedUploadedFiles =
                                             <FFUploadedFile>[];
 
@@ -168,16 +174,17 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                                               .map((u) => u!)
                                               .toList();
                                         } finally {
-                                          _model.isDataUploading = false;
+                                          _model.isDataUploading_profilePhoto =
+                                              false;
                                         }
                                         if (selectedUploadedFiles.length ==
                                                 selectedMedia.length &&
                                             downloadUrls.length ==
                                                 selectedMedia.length) {
                                           safeSetState(() {
-                                            _model.uploadedLocalFile =
+                                            _model.uploadedLocalFile_profilePhoto =
                                                 selectedUploadedFiles.first;
-                                            _model.uploadedFileUrl =
+                                            _model.uploadedFileUrl_profilePhoto =
                                                 downloadUrls.first;
                                           });
                                         } else {
@@ -188,7 +195,8 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
 
                                       await currentUserReference!
                                           .update(createUsersRecordData(
-                                        photoUrl: _model.uploadedFileUrl,
+                                        photoUrl:
+                                            _model.uploadedFileUrl_profilePhoto,
                                       ));
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -218,7 +226,8 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                                             child: Image.network(
                                               currentUserPhoto != ''
                                                   ? currentUserPhoto
-                                                  : _model.uploadedFileUrl,
+                                                  : _model
+                                                      .uploadedFileUrl_profilePhoto,
                                               width: 100.0,
                                               height: 100.0,
                                               fit: BoxFit.cover,
@@ -365,6 +374,245 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 20.0, 16.0, 0.0),
+                                child: FutureBuilder<ApiCallResponse>(
+                                  future: GetAllCountriesCall.call(),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    final countryGetAllCountriesResponse =
+                                        snapshot.data!;
+
+                                    return Autocomplete<String>(
+                                      initialValue: TextEditingValue(),
+                                      optionsBuilder: (textEditingValue) {
+                                        if (textEditingValue.text == '') {
+                                          return const Iterable<String>.empty();
+                                        }
+                                        return GetAllCountriesCall.jpName(
+                                          countryGetAllCountriesResponse
+                                              .jsonBody,
+                                        )!
+                                            .where((option) {
+                                          final lowercaseOption =
+                                              option.toLowerCase();
+                                          return lowercaseOption.contains(
+                                              textEditingValue.text
+                                                  .toLowerCase());
+                                        });
+                                      },
+                                      optionsViewBuilder:
+                                          (context, onSelected, options) {
+                                        return AutocompleteOptionsList(
+                                          textFieldKey: _model.countryKey,
+                                          textController:
+                                              _model.countryTextController!,
+                                          options: options.toList(),
+                                          onSelected: onSelected,
+                                          textStyle: FlutterFlowTheme.of(
+                                                  context)
+                                              .bodyMedium
+                                              .override(
+                                                font: GoogleFonts.spaceGrotesk(
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMedium
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMedium
+                                                          .fontStyle,
+                                                ),
+                                                letterSpacing: 0.0,
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .fontStyle,
+                                              ),
+                                          textHighlightStyle: TextStyle(),
+                                          elevation: 4.0,
+                                          optionBackgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                          optionHighlightColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryBackground,
+                                          maxHeight: 200.0,
+                                        );
+                                      },
+                                      onSelected: (String selection) {
+                                        safeSetState(() => _model
+                                            .countrySelectedOption = selection);
+                                        FocusScope.of(context).unfocus();
+                                      },
+                                      fieldViewBuilder: (
+                                        context,
+                                        textEditingController,
+                                        focusNode,
+                                        onEditingComplete,
+                                      ) {
+                                        _model.countryFocusNode = focusNode;
+
+                                        _model.countryTextController =
+                                            textEditingController;
+                                        return TextFormField(
+                                          key: _model.countryKey,
+                                          controller: textEditingController,
+                                          focusNode: focusNode,
+                                          onEditingComplete: onEditingComplete,
+                                          autofocus: false,
+                                          textInputAction: TextInputAction.next,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelText: 'Country',
+                                            labelStyle: FlutterFlowTheme.of(
+                                                    context)
+                                                .labelLarge
+                                                .override(
+                                                  font:
+                                                      GoogleFonts.spaceGrotesk(
+                                                    fontWeight:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelLarge
+                                                            .fontWeight,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .labelLarge
+                                                            .fontStyle,
+                                                  ),
+                                                  letterSpacing: 0.0,
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelLarge
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelLarge
+                                                          .fontStyle,
+                                                ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .alternate,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(4.0),
+                                                topRight: Radius.circular(4.0),
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(4.0),
+                                                topRight: Radius.circular(4.0),
+                                              ),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(4.0),
+                                                topRight: Radius.circular(4.0),
+                                              ),
+                                            ),
+                                            focusedErrorBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(4.0),
+                                                topRight: Radius.circular(4.0),
+                                              ),
+                                            ),
+                                            filled: true,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            contentPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 16.0, 16.0, 8.0),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyLarge
+                                              .override(
+                                                font: GoogleFonts.spaceGrotesk(
+                                                  fontWeight:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyLarge
+                                                          .fontWeight,
+                                                  fontStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyLarge
+                                                          .fontStyle,
+                                                ),
+                                                letterSpacing: 0.0,
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyLarge
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyLarge
+                                                        .fontStyle,
+                                                lineHeight: 3.0,
+                                              ),
+                                          keyboardType: TextInputType.name,
+                                          validator: _model
+                                              .countryTextControllerValidator
+                                              .asValidator(context),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 12.0, 16.0, 0.0),
                                 child: TextFormField(
                                   controller: _model.phoneTextController,
@@ -372,7 +620,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                                   autofocus: false,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Phone',
+                                    labelText: 'Phone (Optional)',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .labelLarge
                                         .override(
@@ -501,7 +749,43 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
                               .update(createUsersRecordData(
                             displayName: _model.nameTextController.text,
                             phoneNumber: _model.phoneTextController.text,
+                            country: _model.countryTextController.text,
                           ));
+                          if (!(valueOrDefault(
+                                      currentUserDocument?.refCode, '') !=
+                                  '')) {
+                            await currentUserReference!
+                                .update(createUsersRecordData(
+                              refCode: 'PUSH-${random_data.randomString(
+                                6,
+                                6,
+                                true,
+                                true,
+                                true,
+                              )}',
+                            ));
+                          }
+                          if ((valueOrDefault(
+                                      currentUserDocument?.country, '') ==
+                                  'Nigeria') ||
+                              (valueOrDefault(
+                                      currentUserDocument?.country, '') ==
+                                  'nigeria') ||
+                              (valueOrDefault(
+                                      currentUserDocument?.country, '') ==
+                                  'NG')) {
+                            await currentUserReference!
+                                .update(createUsersRecordData(
+                              currency: 'NGN',
+                              currencySymbol: '₦',
+                            ));
+                          } else {
+                            await currentUserReference!
+                                .update(createUsersRecordData(
+                              currency: 'USD',
+                              currencySymbol: '\$',
+                            ));
+                          }
 
                           context.goNamed(HomeWidget.routeName);
                         },

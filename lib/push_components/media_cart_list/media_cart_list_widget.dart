@@ -528,7 +528,7 @@ class _MediaCartListWidgetState extends State<MediaCartListWidget> {
                         borderSide: BorderSide(
                           color: Colors.transparent,
                         ),
-                        borderRadius: BorderRadius.circular(60.0),
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
                     ),
                   ),

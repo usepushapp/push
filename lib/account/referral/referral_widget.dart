@@ -206,7 +206,7 @@ class _ReferralWidgetState extends State<ReferralWidget>
                                                     .fromSTEB(
                                                         0.0, 0.0, 0.0, 12.0),
                                                 child: Text(
-                                                  'Earn 2.5% of their transactions',
+                                                  'Earn ₦10,000 when your friend publishes their first campaign!',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .titleSmall
@@ -300,7 +300,7 @@ class _ReferralWidgetState extends State<ReferralWidget>
                                                         currentUserDocument
                                                             ?.refCode,
                                                         '')
-                                                    : 'NULL - Generate Below',
+                                                    : 'NOT SETUP',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium
@@ -594,7 +594,7 @@ class _ReferralWidgetState extends State<ReferralWidget>
                                                     .fromSTEB(
                                                         12.0, 0.0, 0.0, 0.0),
                                                 child: Text(
-                                                  'You get 2.5% of their transaction',
+                                                  'You get  ₦10,000 Instantly',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyMedium
@@ -750,7 +750,7 @@ class _ReferralWidgetState extends State<ReferralWidget>
                                                 future: queryUsersRecordCount(
                                                   queryBuilder: (usersRecord) =>
                                                       usersRecord.where(
-                                                    'ref',
+                                                    'referred_by',
                                                     isEqualTo: valueOrDefault(
                                                         currentUserDocument
                                                             ?.refCode,
@@ -882,7 +882,7 @@ class _ReferralWidgetState extends State<ReferralWidget>
                                       borderSide: BorderSide(
                                         color: Colors.transparent,
                                       ),
-                                      borderRadius: BorderRadius.circular(60.0),
+                                      borderRadius: BorderRadius.circular(12.0),
                                     ),
                                   ),
                                 ),

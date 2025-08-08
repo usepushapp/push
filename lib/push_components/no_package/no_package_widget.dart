@@ -115,7 +115,7 @@ class _NoPackageWidgetState extends State<NoPackageWidget> {
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                         child: Text(
-                          'Setup your Push',
+                          'Setup your Campaign',
                           textAlign: TextAlign.start,
                           style:
                               FlutterFlowTheme.of(context).titleLarge.override(
@@ -130,7 +130,7 @@ class _NoPackageWidgetState extends State<NoPackageWidget> {
                 Align(
                   alignment: AlignmentDirectional(0.0, 0.0),
                   child: Text(
-                    'Ensure all the push field is completed',
+                    'Ensure all the field is completed',
                     textAlign: TextAlign.center,
                     style: FlutterFlowTheme.of(context).titleSmall.override(
                           font: GoogleFonts.spaceGrotesk(

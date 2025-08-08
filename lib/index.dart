@@ -40,5 +40,19 @@ export '/payments/transactions/transactions_widget.dart'
 export '/admin/push_orders/push_orders_widget.dart' show PushOrdersWidget;
 export '/admin/push_order_details/push_order_details_widget.dart'
     show PushOrderDetailsWidget;
-export '/push/media_search_page_copy/media_search_page_copy_widget.dart'
+export '/mpv2/media_search_page_copy/media_search_page_copy_widget.dart'
     show MediaSearchPageCopyWidget;
+export '/dashboard/web_flow_04/web_flow04_widget.dart' show WebFlow04Widget;
+export '/dashboard/web_flow_01/web_flow01_widget.dart' show WebFlow01Widget;
+export '/dashboard/web_flow_02/web_flow02_widget.dart' show WebFlow02Widget;
+export '/dashboard/web_flow_03/web_flow03_widget.dart' show WebFlow03Widget;
+export '/dashboard/dashboard/dashboard_widget.dart' show DashboardWidget;
+export '/billboard/billboard_setup/billboard_setup_widget.dart'
+    show BillboardSetupWidget;
+export '/billboard/billboard_setup_details/billboard_setup_details_widget.dart'
+    show BillboardSetupDetailsWidget;
+export '/billboard/billboard_details/billboard_details_widget.dart'
+    show BillboardDetailsWidget;
+export '/mpv2/billboards_m_v_p2/billboards_m_v_p2_widget.dart'
+    show BillboardsMVP2Widget;
+export '/billboard/billboards/billboards_widget.dart' show BillboardsWidget;

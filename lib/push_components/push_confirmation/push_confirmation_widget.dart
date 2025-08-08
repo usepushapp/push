@@ -127,7 +127,7 @@ class _PushConfirmationWidgetState extends State<PushConfirmationWidget> {
                 Align(
                   alignment: AlignmentDirectional(0.0, 0.0),
                   child: Text(
-                    'Your order is pending review. We\'d notify you once your push is ready. Ensure your account is sufficiently Funded.',
+                    'Your order is pending review. Keep an eye on your email. Ensure your account is sufficiently Funded.',
                     textAlign: TextAlign.center,
                     style: FlutterFlowTheme.of(context).titleSmall.override(
                           font: GoogleFonts.spaceGrotesk(
